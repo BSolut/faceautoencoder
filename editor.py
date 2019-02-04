@@ -69,8 +69,8 @@ class FaceEditor(object):
         y = (mouse_pos[1] - sliders_y)
 
         if x >= 0 and y >= 0 and x < sliders_w and y < sliders_h:
-            slider_ix_w = x / slider_w
-            slider_ix_h = y / slider_h
+            slider_ix_w = int(x / slider_w)
+            slider_ix_h = int(y / slider_h)
 
             self.cur_slider_ix = slider_ix_h * slider_cols + slider_ix_w
             self.mouse_pressed = True
@@ -79,7 +79,7 @@ class FaceEditor(object):
         y = (mouse_pos[1] - sliders_y)
 
         if y >= 0 and y < sliders_h:
-            slider_row_ix = self.cur_slider_ix / slider_cols
+            slider_row_ix = int(self.cur_slider_ix / slider_cols)
             slider_val = y - slider_row_ix * slider_h
 
             slider_val = min(max(slider_val, slider_py), slider_h - slider_py) - slider_py
@@ -124,18 +124,18 @@ class FaceEditor(object):
     def draw_sliders(self):
         screen = self.screen
         for i in range(num_params):
-            row = i / slider_cols
+            row = int(i / slider_cols)
             col = i % slider_cols
             x = sliders_x + col * slider_w
             y = sliders_y + row * slider_h
 
-            cx = x + slider_w / 2
+            cx = int(x + slider_w / 2)
             cy_1 = y + slider_py
             cy_2 = y + slider_h - slider_py
             pygame.draw.line(screen, slider_color, (cx, cy_1), (cx, cy_2))
 
             py = y + int((self.cur_params[i] / 6.0 + 0.5) * (slider_h - slider_py*2)) + slider_py
-            pygame.draw.circle(screen, slider_color, (cx, py), slider_w/2 - slider_px)
+            pygame.draw.circle(screen, slider_color, (cx, py), int(slider_w/2 - slider_px))
 
             cx_1 = x + slider_px
             cx_2 = x + slider_w - slider_px
