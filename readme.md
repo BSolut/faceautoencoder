@@ -15,7 +15,7 @@ python editor.py
 ## Train your own dataset
 #### Friendly note
 If you still want to sleep peacefully at night, make sure that there are only two eyes in one picture in your training data.
-[<img src="https://i.imgur.com/0Gyi9rC.gif" />]()
+[<img src="https://i.imgur.com/E4CkT9O.gif" />]()
 #### Building training data
 * Build prepare working dir:
   ```bash
