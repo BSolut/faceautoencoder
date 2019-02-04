@@ -1,9 +1,9 @@
 *A pretrained autoencoder for femalefaces*
 [<img src="https://i.imgur.com/BtbrwwT.jpg" />]()
 ## Run
- Install dependencies [dlib], [cv2], [pygame], [matplotlib], [keras]:
+ Install dependencies [dlib], [cv2], [pygame], [matplotlib], [keras], [tensorflow]:
 ```bash
-sudo pip install dlib opencv pygame matplotlib keras
+sudo pip install dlib opencv-python pygame matplotlib tensorflow keras
 ```
 ```bash
 git clone git@github.com:BSolut/faceautoencoder.git
