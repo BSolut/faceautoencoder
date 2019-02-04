@@ -1,12 +1,15 @@
+import os
 from keras.layers import Input, Dense, Flatten, Reshape, Conv2D, Conv2DTranspose
 from keras.models import Model, load_model 
 
 class AutoEncoder(object):
-	PARAM_SIZE = 20
+	PARAM_SIZE = 80
 	INPUT_SHAPE = (166, 166, 3,)
 
 	def __init__(self):
-		pass
+		self.encoder = None
+		self.decoder = None
+		self.model = None
 
 	def _encoder(self):
 		if self.encoder:
@@ -47,8 +50,10 @@ class AutoEncoder(object):
 		return model
 
 	def load(self, basedir):
-		self.encoder = load_model(basedir+'encoder.h5')
-		self.decoder = load_model(basedir+'decoder.h5')
+		if os.path.isfile(basedir+'encoder.h5'):
+			self.encoder = load_model(basedir+'encoder.h5')
+		if os.path.isfile(basedir+'decoder.h5'):
+			self.decoder = load_model(basedir+'decoder.h5')
 
 	def encoder_decoder(self):
 		enc = self._encoder()

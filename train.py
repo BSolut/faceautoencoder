@@ -6,7 +6,7 @@ from fdream import Config
 parser = argparse.ArgumentParser()
 parser.add_argument('--seed', default=123456, help="Random seed for test images")
 parser.add_argument('-e', '--epochs', default=2000, help="Number of epochs to run")
-parser.add_argument('-b', '--batchsize', default=20, help="Batch size")
+parser.add_argument('-b', '--batchsize', default=8, help="Batch size")
 args = vars(parser.parse_args(sys.argv[1:]))
 
 
@@ -23,26 +23,27 @@ from fdream.autoencoder import AutoEncoder
 from keras.optimizers import Adam
 
 ae = AutoEncoder()
-ae.load('./weights/')
+ae.load(cfg.base_dir)
 ae_model = ae.encoder_decoder()
-ae_model.compile(optimizer=Adam(lr=0.001), loss='mse')
+ae_model.compile(optimizer=Adam(lr=0.0008), loss='mse')
 
 np.random.seed(int(args['seed']))
-rand_vecs = np.random.normal(0.0, 1.0, (10, 20))
-ret = ae.decoder.predict(rand_vecs)
+rand_vecs = np.random.normal(0.0, 1.0, (10, AutoEncoder.PARAM_SIZE))
 
-for epoch in range(int(args['epochs'])):
-    ae_model.fit(train_data, train_data, epochs=1, batch_size=20)
-    ae.encoder.save(r'./weights/encoder.h5')
-    ae.decoder.save(r'./weights/decoder.h5')
 
-    rand_imgs = np.hstack([cv2.cvtColor((ret[idx] * 255).astype(np.uint8), cv2.COLOR_RGB2BGR) for idx in range(10)])
-    cv2.imwrite(cfg.base_dir+'r_'+str(epoch)+'.png', rand_imgs)
+for epoch in range(122, int(args['epochs'])):
+    print("Epoch: "+str(epoch))
+    history = ae_model.fit(train_data, train_data, epochs=1, batch_size=int(args['batchsize']), shuffle=True)
+    loss = history.history['loss'][-1]
+    print("Loss: " + str(loss))
+
+    ae.encoder.save(cfg.base_dir+'encoder.h5')
+    ae.decoder.save(cfg.base_dir+'decoder.h5')
 
     ret  = ae_model.predict([test_set])
     ret_imgs = np.hstack([convert_toimg(ret[idx]) for idx in range(len(test_set))])
     ret_imgs = np.vstack((test_imgs, ret_imgs))
-    cv2.imwrite(cfg.base_dir+'t_'+str(epoch)+'.png', rand_imgs)
+    cv2.imwrite(cfg.base_dir+'t_'+str(epoch)+'.png', ret_imgs)
 
 
 

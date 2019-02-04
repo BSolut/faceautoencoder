@@ -1,6 +1,6 @@
 import os, sys, argparse
 import numpy as np
-#import dlib
+import dlib
 import cv2
 import urllib
 from fdream import Config

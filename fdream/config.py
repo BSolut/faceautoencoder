@@ -1,4 +1,4 @@
-base_dir = "/home/richard/data_ocr/faces/"
+base_dir = "./work_dir/"
 
 conf = {
     'base_dir': base_dir,
